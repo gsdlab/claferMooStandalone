@@ -35,7 +35,8 @@ def execute_main():
     filename = filename[:-4] +  "_desugared.cfr"
 
     subprocess.check_output(["clafer",  '--mode=xml','--nr', filename], \
-                            stderr=subprocess.STDOUT)    
+                            stderr=subprocess.STDOUT)
+        
     spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")     
     subprocess.check_output(["clafer",  '--nr', filename], stderr=subprocess.STDOUT)
 
@@ -46,15 +47,14 @@ def execute_main():
     
     remove_alloy_solutions()   
 
-    choco_fp = open(filename[:-4] + ".choco", "w")
-    print_conversion_to_constraints(spl_transformer, choco_fp)
-    choco_fp.close()
+    #choco_fp = open(filename[:-4] + ".choco", "w")
+    #print_conversion_to_constraints(spl_transformer, choco_fp)
+    #choco_fp.close()
     
 
-    print "Runing  alloy on generated als."
+    print "Running  alloy on generated als."
     
-    subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")], \
-                            stderr=subprocess.STDOUT)
+    subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
     print "Finished Running alloy on generated als."    
     show_clafers_from_alloy_solutions(spl_transformer)
      
