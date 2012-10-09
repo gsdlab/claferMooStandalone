@@ -19,8 +19,8 @@ Performs multi-objective optimization over clafer models, which can encode attri
  * cd 2012-models-clafermultiobjective-data-generator/spl_datagenerator
  * python IntegratedFeatureModelOptimizer.py  ../dataset/linkedlistsplc2011.cfr 
  * This should provide the following output:
- *	** Running  alloy on generated als.
- *	** Finished Running alloy on generated als.
+ ** Running  alloy on generated als.
+ ** Finished Running alloy on generated als.
 			simpleConfig : LinkedList 
 				AbstractElement : IMeasurable 
 					ElementC : IMeasurable 
