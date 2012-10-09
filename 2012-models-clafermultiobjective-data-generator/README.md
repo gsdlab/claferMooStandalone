@@ -65,7 +65,7 @@ Traceback (most recent call last):
   File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/subprocess.py", line 1202, in _execute_child
     raise child_exception
 OSError: [Errno 2] No such file or directory
-<pre>
+</pre>
 
 * ** Solution 
 Download clafer-tools from https://github.com/gsdlab/claferig/downloads. and copy the file called clafer (or clafer.exe) into your path. 
