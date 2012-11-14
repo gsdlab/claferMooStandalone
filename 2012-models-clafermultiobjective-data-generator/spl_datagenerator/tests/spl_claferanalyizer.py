@@ -140,7 +140,7 @@ class Test(unittest.TestCase):
         for filename in self.src_filenames:
             filename = filename[:-4] +  "_desugared.cfr"
             choco_fp = open(filename[:-4] + ".choco", "w")
-            print "Runnig with i %s" % i
+            print "Running with i %s" % i
             print_conversion_to_constraints(self.src_parsers[i], choco_fp)
             choco_fp.close()
             subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../../tools/constraint_solver_backend.jar', \
