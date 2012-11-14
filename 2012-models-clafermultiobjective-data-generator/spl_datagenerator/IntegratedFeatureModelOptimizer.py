@@ -21,6 +21,9 @@ def execute_main():
     parser.add_argument('clafer_feature_model_filename', metavar='F', type=str, nargs=1,
                        help='Attributed Feature Model in clafer filename')
 
+    parser.add_argument('--onlycomputerelaxedbounds',   dest='onlycomputerelaxedbounds',  action='store_true',
+                       default=False, help='Only show a set of bounds for goals and dont do anything else')
+        
     parser.add_argument('--noexecution',   dest='noexecution',  action='store_true',
                        default=False, help='Do not execute generated als file')
     
