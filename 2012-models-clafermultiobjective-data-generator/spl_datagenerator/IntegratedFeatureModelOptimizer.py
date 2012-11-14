@@ -8,8 +8,8 @@ import subprocess
 import os
 from xml_parser_helper import load_xml_model
 from spl_claferanalyzer import SPL_ClaferAnalyzer
-from AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_gaols  
-from AlloyBackToClafer import show_clafer
+from AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_goals  
+from AlloyBackToClafer import show_clafers_from_alloy_solutions
 from ExpandSumOperator import expand_feature_types_sum
 from ConstraintProgramming import print_conversion_to_constraints
 
@@ -48,15 +48,12 @@ def execute_main():
     subprocess.check_output(["clafer",  '--nr', filename], stderr=subprocess.STDOUT)
 
     als_fp = open(filename[:-4] + ".als", "a")
-    generate_and_append_partial_instances_and_gaols(filename[:-4] + ".xml", als_fp)
+    generate_and_append_partial_instances_and_goals(filename[:-4] + ".xml", als_fp)
     als_fp.close()
 
     
     remove_alloy_solutions()   
 
-    #choco_fp = open(filename[:-4] + ".choco", "w")
-    #print_conversion_to_constraints(spl_transformer, choco_fp)
-    #choco_fp.close()
 
     if not args.noexecution:
         print "Running  alloy on generated als."
@@ -66,26 +63,7 @@ def execute_main():
         show_clafers_from_alloy_solutions(spl_transformer)
      
 
-def show_clafers_from_alloy_solutions(spl_transformer):
-    """
-    Write Back Alloy Answer as Clafer, 
-        : and return a list of sets for product-level attributes in the pareto front.    
-    """
-    configured_product_UniqueId = spl_transformer.get_clafer_UniqueId(spl_transformer.get_concrete_instance_as_xml_element())
-    configured_product_label = "this/" + configured_product_UniqueId    
-    product_level_values_list =[]
-    i = 1
-    while(os.path.exists("alloy_solutions_" + str(i)+ ".xml")):
-        
-        instance_xml = load_xml_model("alloy_solutions_"+ str(i) + ".xml")
-        
-        top_level_product_sig = instance_xml.find("./instance/sig[@label='%s']" % configured_product_label)
-        top_level_product_atom = top_level_product_sig.find("./atom")
-    
-        product_level_values_list.append(show_clafer((top_level_product_sig, top_level_product_atom), 0, instance_xml, spl_transformer))
-        #print "\n\n Product Level Values %s " % str(product_level_values) 
-        i += 1
-    return product_level_values_list
+
 
 def remove_alloy_solutions():
     j =1;

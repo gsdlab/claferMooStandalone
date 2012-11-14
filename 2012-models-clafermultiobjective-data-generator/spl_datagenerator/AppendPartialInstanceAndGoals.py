@@ -13,7 +13,7 @@ import math
 _namespaces = {'c1': 'http://gsd.uwaterloo.ca/clafer', 'xsi': 'http://www.w3.org/2001/XMLSchema-instance'}
 
 
-def generate_and_append_partial_instances_and_gaols(xml_filename, als_filehandle):
+def generate_and_append_partial_instances_and_goals(xml_filename, als_filehandle):
         
     spl_transformer =  spl_claferanalyzer.SPL_ClaferAnalyzer(xml_filename)
     
