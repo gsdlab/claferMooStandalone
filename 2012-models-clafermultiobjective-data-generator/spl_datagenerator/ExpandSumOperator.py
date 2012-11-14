@@ -31,11 +31,9 @@ def expand_feature_types_sum(filename, spl_transformer):
                                       for feature  in spl_transformer.get_features_as_xml_elements(feature_type_UniqueId)])
                 
                 new_line = line_source.replace(search_string + '.' + quality_property, newsum)
-                print "Printing Match of ...  %s converte to %s  ..."        % (line_source, new_line)                       
                 dest_desugared_fp.write(new_line)    
                 line_is_sum_operator = True    
         if line_is_sum_operator == False:
-            "Printing Unmatched  ... %s ..." % line_source
             dest_desugared_fp.write(line_source)    
     dest_desugared_fp.close()
     

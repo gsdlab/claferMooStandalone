@@ -21,6 +21,10 @@ def execute_main():
     parser.add_argument('clafer_feature_model_filename', metavar='F', type=str, nargs=1,
                        help='Attributed Feature Model in clafer filename')
 
+    parser.add_argument('--noexecution',   dest='noexecution',  action='store_true',
+                       default=False, help='Do not execute generated als file')
+    
+
     args = parser.parse_args()
     filename = args.clafer_feature_model_filename[0]
     
@@ -50,13 +54,13 @@ def execute_main():
     #choco_fp = open(filename[:-4] + ".choco", "w")
     #print_conversion_to_constraints(spl_transformer, choco_fp)
     #choco_fp.close()
-    
 
-    print "Running  alloy on generated als."
+    if not args.noexecution:
+        print "Running  alloy on generated als."
     
-    subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
-    print "Finished Running alloy on generated als."    
-    show_clafers_from_alloy_solutions(spl_transformer)
+        subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+        print "Finished Running alloy on generated als."    
+        show_clafers_from_alloy_solutions(spl_transformer)
      
 
 def show_clafers_from_alloy_solutions(spl_transformer):
