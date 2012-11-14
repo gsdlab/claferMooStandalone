@@ -7,7 +7,7 @@ import unittest
 import subprocess
 from spl_datagenerator.spl_claferanalyzer import SPL_ClaferAnalyzer
 from spl_datagenerator.ExpandSumOperator import expand_feature_types_sum
-from spl_datagenerator.AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_gaols  
+from spl_datagenerator.AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_goals  
 from spl_datagenerator.IntegratedFeatureModelOptimizer import remove_alloy_solutions, show_clafers_from_alloy_solutions
 from spl_datagenerator.ConstraintProgramming import print_conversion_to_constraints
 from spl_datagenerator.xml_parser_helper import load_xml_model
@@ -64,7 +64,7 @@ class Test(unittest.TestCase):
             
 
             als_fp = open(filename[:-4] + ".als", "a")
-            generate_and_append_partial_instances_and_gaols(filename[:-4] + ".xml", als_fp)
+            generate_and_append_partial_instances_and_goals(filename[:-4] + ".xml", als_fp)
             als_fp.close()
             
             self.src_parsers.append(spl_transformer)            
