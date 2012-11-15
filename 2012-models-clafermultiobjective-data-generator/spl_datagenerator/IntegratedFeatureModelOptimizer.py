@@ -8,6 +8,7 @@ import subprocess
 import os
 from xml_parser_helper import load_xml_model
 from spl_claferanalyzer import SPL_ClaferAnalyzer
+from ComputeRelaxedBoundsGoals import ComputeRelaxedBoundsGoals
 from AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_goals  
 from AlloyBackToClafer import show_clafers_from_alloy_solutions
 from ExpandSumOperator import expand_feature_types_sum
@@ -36,31 +37,36 @@ def execute_main():
    
     
     spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")    
-    expand_feature_types_sum(filename, spl_transformer)
 
 
-    filename = filename[:-4] +  "_desugared.cfr"
-
-    subprocess.check_output(["clafer",  '--mode=xml','--nr', filename], \
-                            stderr=subprocess.STDOUT)
+    if  args.onlycomputerelaxedbounds:
+        BoundsGoalComputer =  ComputeRelaxedBoundsGoals(spl_transformer)
+        for lowerBound, UpperBound in BoundsGoalComputer.getSimpleBounds():
+            print "%s,%s" % (lowerBound, UpperBound)
+    else:
+        expand_feature_types_sum(filename, spl_transformer)
+        filename = filename[:-4] +  "_desugared.cfr"
+    
+        subprocess.check_output(["clafer",  '--mode=xml','--nr', filename], \
+                                stderr=subprocess.STDOUT)
+            
+        spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")     
+        subprocess.check_output(["clafer",  '--nr', filename], stderr=subprocess.STDOUT)
+    
+        als_fp = open(filename[:-4] + ".als", "a")
+        generate_and_append_partial_instances_and_goals(filename[:-4] + ".xml", als_fp)
+        als_fp.close()
+    
         
-    spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")     
-    subprocess.check_output(["clafer",  '--nr', filename], stderr=subprocess.STDOUT)
-
-    als_fp = open(filename[:-4] + ".als", "a")
-    generate_and_append_partial_instances_and_goals(filename[:-4] + ".xml", als_fp)
-    als_fp.close()
-
+        remove_alloy_solutions()   
     
-    remove_alloy_solutions()   
-
-
-    if not args.noexecution:
-        print "Running  alloy on generated als."
     
-        subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
-        print "Finished Running alloy on generated als."    
-        show_clafers_from_alloy_solutions(spl_transformer)
+        if not args.noexecution:
+            print "Running  alloy on generated als."
+        
+            subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+            print "Finished Running alloy on generated als."    
+            show_clafers_from_alloy_solutions(spl_transformer)
      
 
 

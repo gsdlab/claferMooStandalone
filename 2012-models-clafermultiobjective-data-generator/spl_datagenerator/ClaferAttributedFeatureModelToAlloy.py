@@ -4,7 +4,7 @@ Created on Jul 29, 2012
 @author: rafaelolaechea
 '''
 import subprocess
-from AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_gaols  
+from AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_goals  
 from spl_claferanalyzer import SPL_ClaferAnalyzer
 
 def execute_main():
