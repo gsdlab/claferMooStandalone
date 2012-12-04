@@ -37,7 +37,9 @@ class ComputeRelaxedBoundsGoals(object):
                 nonfunctional_property_value = self._spl_transformer.get_property_value(feature, nonfunctional_property)
                 
                 upper_bound = upper_bound + max(int(nonfunctional_property_value), 0)
-                lower_bound = lower_bound + min((nonfunctional_property_value), 0)
+                lower_bound = lower_bound + min(int(nonfunctional_property_value), 0)
+                
+                #print "NonFunctional Property Value %s" %  nonfunctional_property_value
                 
             self._Bounds.append((lower_bound, upper_bound))
                 
