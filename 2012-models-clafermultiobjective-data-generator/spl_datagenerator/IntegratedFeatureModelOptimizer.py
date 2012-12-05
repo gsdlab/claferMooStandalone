@@ -8,7 +8,7 @@ import subprocess
 import os
 from xml_parser_helper import load_xml_model
 from spl_claferanalyzer import SPL_ClaferAnalyzer
-from ComputeRelaxedBoundsGoals import ComputeRelaxedBoundsGoals
+from ComputeRelaxedBoundsGoals import ComputeRelaxedBoundsGoalsCls
 from AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_goals  
 from AlloyBackToClafer import show_clafers_from_alloy_solutions
 from ExpandSumOperator import expand_feature_types_sum
@@ -32,15 +32,15 @@ def execute_main():
     args = parser.parse_args()
     filename = args.clafer_feature_model_filename[0]
     
-    subprocess.check_output(["clafer",  '--mode=xml','--nr', filename], \
-                            stderr=subprocess.STDOUT)       
+    subprocess.check_output(["clafer",  '--mode=xml','--nr', filename]) 
+#                            stderr=subprocess.STDOUT)       
    
     
     spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")    
 
 
     if  args.onlycomputerelaxedbounds:
-        BoundsGoalComputer =  ComputeRelaxedBoundsGoals(spl_transformer)
+        BoundsGoalComputer =  ComputeRelaxedBoundsGoalsCls(spl_transformer)
         for lowerBound, UpperBound in BoundsGoalComputer.getSimpleBounds():
             print "%s,%s" % (lowerBound, UpperBound)
     else:

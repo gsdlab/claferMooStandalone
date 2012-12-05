@@ -26,7 +26,8 @@ def expand_feature_types_sum(filename, spl_transformer):
             search_string = 'sum' + ' ' + feature_type
             if line_source.find(search_string_wdot)!=-1:
                 quality_property = extract_quality_property(line_source, search_string)
-
+                #print "Expanding sum , on line %s " %  feature_type_UniqueId
+                #print "# Children of %s =  %s" %  (feature_type_UniqueId, len(spl_transformer.get_features_as_xml_elements(feature_type_UniqueId)))
                 newsum = " + ".join([ "%s.%s" % (spl_transformer.get_clafer_Id(feature), quality_property) 
                                       for feature  in spl_transformer.get_features_as_xml_elements(feature_type_UniqueId)])
                 

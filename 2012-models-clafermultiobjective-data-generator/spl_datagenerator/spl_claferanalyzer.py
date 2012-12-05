@@ -63,6 +63,7 @@ class SPL_ClaferAnalyzer(object):
     def FeatureTypes(self):
         if self._FeatureTypes == None:
             self._FeatureTypes = self.get_abstract_top_level_clafers()[:-1]
+        #print "Returing _FeatureTypes= %s " % (str(self._FeatureTypes),)
         return self._FeatureTypes
     
     def getFeatureAttributes(self, FeatureType):
@@ -161,6 +162,8 @@ class SPL_ClaferAnalyzer(object):
 #            for x in iterate_over:
 #                print x.find('./c1:UniqueId', _namespaces).text       
 #            print "Clafer id's available were those."
+#            print "getting %s " % uniqueID
+#            print "Found %s " % str(claferDecl for claferDecl  in self.xml_model.findall(".//c1:Declaration[@xsi:type='cl:IClafer']", _namespaces))
             xml_element = [claferDecl for claferDecl  in self.xml_model.findall(".//c1:Declaration[@xsi:type='cl:IClafer']", _namespaces) \
                            if claferDecl.find('./c1:UniqueId', _namespaces) != None and \
                            claferDecl.find('./c1:UniqueId', _namespaces).text == uniqueID ][0]
@@ -172,6 +175,7 @@ class SPL_ClaferAnalyzer(object):
         """
         Returns a list of all transitive features of a clafer, as a list of unique names.
         """
+        #print "Getting supers of %s " % self.get_clafer_UniqueId(clafer)
         ret_supers = []               
         
         element_super = clafer.find('./c1:Supers/c1:Super/c1:Exp/c1:Id', _namespaces)
@@ -195,9 +199,23 @@ class SPL_ClaferAnalyzer(object):
               ["total_%s" % nonfunctional_property for nonfunctional_property  in self.get_non_functional_properties_listing()]
     
     def get_features_as_xml_elements(self, feature_type_unique_id=None):
+        """
+        Returns a list of all features that inherit from feature_type_unique_id, or all features if feature_type_unique_id = None.
+        """
+        #print "Called get_features_as_xml_elements"
+        #print "Returning list of features, which aren't in %s  " % (str(["total_%s" % nonfunctional_property for nonfunctional_property  in self.get_non_functional_properties_listing()]),)
+        #raw_features = [ self.get_clafer_Id(feature)  for feature in self.SPL.findall(".//c1:Declaration[@xsi:type='cl:IClafer']", _namespaces) ]        
+        #print "Start raw_features"
+        #print raw_features        
+        #print "End raw_features"
+        
         ret_list_features  = [feature for feature in self.SPL.findall(".//c1:Declaration[@xsi:type='cl:IClafer']", _namespaces) if \
             self.get_clafer_Id(feature) not in  ["total_%s" % nonfunctional_property for nonfunctional_property  in self.get_non_functional_properties_listing()]]         
 
+        # print "Start ret_list_features"
+        # print [ self.get_clafer_Id(feature) for feature in ret_list_features]
+        # print "End ret_list_features"
+        
         if feature_type_unique_id != None:
             ret_list_features = [ feature for feature in ret_list_features if feature_type_unique_id in self.get_supers(feature) ]
         return ret_list_features

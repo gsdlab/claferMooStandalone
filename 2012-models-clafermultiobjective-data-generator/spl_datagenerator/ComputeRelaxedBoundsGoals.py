@@ -4,7 +4,7 @@ Created on Nov 14, 2012
 @author: rafaelolaechea
 '''
 
-class ComputeRelaxedBoundsGoals(object):
+class ComputeRelaxedBoundsGoalsCls(object):
     '''
     Given a clafer Model of a SPL (inside an instance of SPLClaferAnalyzer)  computes  a set of bounds 
     for the values of the goals contained in the clafer model.

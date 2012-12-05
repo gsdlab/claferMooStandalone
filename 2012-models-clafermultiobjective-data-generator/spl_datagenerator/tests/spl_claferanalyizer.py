@@ -16,9 +16,11 @@ class Test(unittest.TestCase):
     src_filenames = ["../../testset/linkedlistsplc2011.cfr", \
                       "../../testset/apacheicse2012.cfr",  \
                       "../../testset/sqlitesplc2011.cfr"] 
-                      
-    src_parsers = []   
     
+    src_filenames_FeatureHierarchy =  [ "../../testset/SearchAndRescueSystem_IlustrateFeatureHierarchyBug.cfr" ]
+    
+    src_parsers = []   
+    src_parsers_FeatureHierarchy = []
 
     src_DirectChildrenOfRootElement = [["AbstractElement" , "AbstractIterator", "AbstractSort", "print", "Measurement", "Base", "total_footprint"],\
                                        ["Base", "HostnameLookups", "KeepAlive", "EnableSendfile",   "FollowSymLinks", "AccessLog", "ExtendedStatus", "InMemory", "Handle", "total_performance"], 
@@ -42,10 +44,15 @@ class Test(unittest.TestCase):
     src_GoalDirectionIsMax = [[False], [True], [False]]
     
     src_ParetoFrontProductLevelAttributeValues = [set([443]), set([296]), set([-299])]
+    src_ParetoFrontProductLevelAttributeValues_FeatureHierarchy = [set([80,6,8,0])]
     
     def setUp(self):
         self.src_parsers = []
-        for filename in self.src_filenames:
+        all_files = list(self.src_filenames)
+        all_files.extend(self.src_filenames_FeatureHierarchy)
+        
+        for filename in all_files:
+            original_filename = filename
             subprocess.check_output(["clafer",  '--mode=xml','--nr', filename], \
                                     stderr=subprocess.STDOUT)       
            
@@ -67,8 +74,13 @@ class Test(unittest.TestCase):
             generate_and_append_partial_instances_and_goals(filename[:-4] + ".xml", als_fp)
             als_fp.close()
             
-            self.src_parsers.append(spl_transformer)            
-
+            if original_filename in self.src_filenames:
+                print "Adding %s to parsers " %  original_filename
+                print "filenames is %s " % self.src_filenames
+                self.src_parsers.append(spl_transformer)                
+            else:
+                print "Adding %s to parsers Feature Hierarchy " %  original_filename                
+                self.src_parsers_FeatureHierarchy.append(spl_transformer)
 
     def test_featurechildren(self):
         i = 0
@@ -164,18 +176,34 @@ class Test(unittest.TestCase):
                 
     def test_IntegratedClaferUsingMoolloyBackend(self):
         i = 0
-        for filename in self.src_filenames:
+        j = 0
+        all_files =  list(self.src_filenames)
+        all_files.extend(self.src_filenames_FeatureHierarchy)
+        
+        for filename in all_files:
+            original_filename = filename
             if filename.find("sqlitesplc2011") == -1:
+                print "i  | %s" % i
+                # E.G in all but sqlitesplc 2001.
+                if filename in self.src_filenames:    
+                    parser = self.src_parsers[i]
+                    ParetoFrontProductLevelAttributeValues = self.src_ParetoFrontProductLevelAttributeValues[i]
+                else:
+                    parser = self.src_parsers_FeatureHierarchy[j]
+                    ParetoFrontProductLevelAttributeValues = self.src_ParetoFrontProductLevelAttributeValues_FeatureHierarchy[j]                    
                 remove_alloy_solutions() 
                 filename = filename[:-4] +  "_desugared.cfr"
                 subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
-                list_values = show_clafers_from_alloy_solutions(self.src_parsers[i])
-                self.assertIn(self.src_ParetoFrontProductLevelAttributeValues[i], \
+                print "Will Get Solution Parser from %s " %    filename             
+                list_values = show_clafers_from_alloy_solutions(parser)
+                self.assertIn(ParetoFrontProductLevelAttributeValues, \
                               list_values,\
                             "Pareto front product level attribute of %s expected, only got %s " \
-                            % (self.src_ParetoFrontProductLevelAttributeValues[i], list_values ))
-            i += 1
-
+                            % (ParetoFrontProductLevelAttributeValues, list_values ))
+            if original_filename in self.src_filenames:
+                i += 1
+            else:
+                j += 1
     def tearDown(self):
         """
         """

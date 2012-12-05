@@ -7,15 +7,15 @@ abstract Feature : PlaceHolderFeature
 	 BatteryUsage : integer
 	 ResponseTime : integer
 	 Reliability : integer
-
+	
 abstract FeatureWithCost : Feature
 	cost : integer
 
 abstract SearchAndRescueFM
 	 xor LocationFinding : PlaceHolderFeature
-		GPS :  FeatureWithCost
+		GPS : FeatureWithCost
 	 		[ this.RampUpTime  = 6]		
-		    [ this.cost  =  80 ]
+//		    [ this.cost  =  80 ]
 		RadioTriangulation : Feature
 	 		[ this.RampUpTime  = 8]					
 	 xor HardwarePlatform : PlaceHolderFeature
