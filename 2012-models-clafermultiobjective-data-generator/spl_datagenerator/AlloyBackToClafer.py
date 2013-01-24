@@ -6,7 +6,7 @@ Created on Aug 14, 2012
 import re, os
 from xml_parser_helper import load_xml_model
 
-def show_clafer(element, tab_count,  instance_xml, spl_transformer):
+def show_clafer(element, tab_count,  instance_xml, preserve_clafer_names, spl_transformer):
     """
     Recursively shows clafer, as well as return a set of values for product-level attributes.
     """
@@ -17,27 +17,27 @@ def show_clafer(element, tab_count,  instance_xml, spl_transformer):
         
     ProductLevelAttribute_Values = set()
     
-    print convert_ClaferUniqueIdLabel_to_ClaferName(element_sig.get('label'), spl_transformer),
+    print convert_ClaferUniqueIdLabel_to_ClaferName(element_sig.get('label'), preserve_clafer_names, spl_transformer),
     
     if is_value_clafer(element, instance_xml):
         print " =  %s" % get_value_clafer(element, instance_xml),
         if spl_transformer.is_product_level_attribute(convert_ClaferUniqueIdLabel_toUnquiID(element_sig.get('label')))== True:
             ProductLevelAttribute_Values.add(int(get_value_clafer(element, instance_xml)))
     elif has_super_clafer(element, instance_xml):
-        print ": %s" %  get_super_clafer(element, instance_xml),
+        print ": %s" %  get_super_clafer(element, instance_xml, preserve_clafer_names),
         
     print ""
     
     
     for children in get_children(element, instance_xml, spl_transformer):
-        child_ProductLevelAttribute_Values = show_clafer(children, tab_count+1, instance_xml, spl_transformer)
+        child_ProductLevelAttribute_Values = show_clafer(children, tab_count+1, instance_xml, preserve_clafer_names, spl_transformer)
         ProductLevelAttribute_Values = ProductLevelAttribute_Values.union(child_ProductLevelAttribute_Values)
     return ProductLevelAttribute_Values
 
-def get_super_clafer(element, instance_xml):
+def get_super_clafer(element, instance_xml, preserve_clafer_names):
         element_sig, element_atom = element
         parent_sig = instance_xml.find(".instance/sig[@ID='%s']" % element_sig.get('parentID'))  
-        return convert_ClaferUniqueIdLabel_to_ClaferName( parent_sig.get('label'))
+        return convert_ClaferUniqueIdLabel_to_ClaferName( parent_sig.get('label'), preserve_clafer_names)
                                                               
 def has_super_clafer(element, instance_xml):
     return is_value_clafer(element, instance_xml) == False
@@ -99,13 +99,14 @@ def convert_ClaferUniqueIdLabel_toUnquiID(UniqueIdLabel):
     match = regex_remove_pre.search(UniqueIdLabel)
     return UniqueIdLabel.replace(match.group(0), '')
     
-def convert_ClaferUniqueIdLabel_to_ClaferName(UniqueIdLabel, spl_transformer=None):  
+def convert_ClaferUniqueIdLabel_to_ClaferName(UniqueIdLabel, PreserveIDs, spl_transformer=None):  
     regex_remove_pre = re.compile(r'this/c\d+_')
+    if PreserveIDs:
+        regex_remove_pre = re.compile(r'this/')
     match = regex_remove_pre.search(UniqueIdLabel)
     return UniqueIdLabel.replace(match.group(0), '')
 
-
-def show_clafers_from_alloy_solutions(spl_transformer):
+def show_clafers_from_alloy_solutions(preserve_clafer_names, spl_transformer):
     """
     Write Back Alloy Answer as Clafer, 
         : and return a list of sets for product-level attributes in the pareto front.    
@@ -121,7 +122,7 @@ def show_clafers_from_alloy_solutions(spl_transformer):
         top_level_product_sig = instance_xml.find("./instance/sig[@label='%s']" % configured_product_label)
         top_level_product_atom = top_level_product_sig.find("./atom")
     
-        product_level_values_list.append(show_clafer((top_level_product_sig, top_level_product_atom), 0, instance_xml, spl_transformer))
+        product_level_values_list.append(show_clafer((top_level_product_sig, top_level_product_atom), 0, instance_xml, preserve_clafer_names, spl_transformer))
         #print "\n\n Product Level Values %s " % str(product_level_values) 
         i += 1
     return product_level_values_list
