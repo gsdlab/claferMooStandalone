@@ -28,13 +28,14 @@ def execute_main():
     parser.add_argument('--noexecution',   dest='noexecution',  action='store_true',
                        default=False, help='Do not execute generated als file')
     
+    parser.add_argument('--preservenames',   dest='preserve_clafer_names',  action='store_true',
+                       default=False, help='Keep unique clafer names')
 
     args = parser.parse_args()
     filename = args.clafer_feature_model_filename[0]
     
     subprocess.check_output(["clafer",  '--mode=xml','--nr', filename]) 
 #                            stderr=subprocess.STDOUT)       
-   
     
     spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")    
 
@@ -60,13 +61,14 @@ def execute_main():
         
         remove_alloy_solutions()   
     
-    
         if not args.noexecution:
+        	
             print "Running  alloy on generated als."
         
-            subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+            subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar', __file__[:-34] + '../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
             print "Finished Running alloy on generated als."    
-            show_clafers_from_alloy_solutions(spl_transformer)
+            print "====="
+            show_clafers_from_alloy_solutions(args.preserve_clafer_names, spl_transformer)
      
 
 
