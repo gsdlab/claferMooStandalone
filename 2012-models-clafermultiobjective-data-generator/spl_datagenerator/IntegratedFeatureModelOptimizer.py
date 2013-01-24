@@ -6,6 +6,7 @@ Created on Aug 13, 2012
 import argparse
 import subprocess
 import os
+import platform
 from xml_parser_helper import load_xml_model
 from spl_claferanalyzer import SPL_ClaferAnalyzer
 from ComputeRelaxedBoundsGoals import ComputeRelaxedBoundsGoalsCls
@@ -16,6 +17,13 @@ from ConstraintProgramming import print_conversion_to_constraints
 
 
 def execute_main():
+
+    
+    if platform.system() is 'Windows':
+        defaultHeapSize = 1340
+    else:
+        defaultHeapSize = 4096
+
     parser = argparse.ArgumentParser(description="Generates optimal instances" \
                                      "out of an attributed feature model" )
                                                  
@@ -31,9 +39,12 @@ def execute_main():
     parser.add_argument('--preservenames',   dest='preserve_clafer_names',  action='store_true',
                        default=False, help='Keep unique clafer names')
 
+    parser.add_argument('--maxHeapSize',   dest='maxHeapSize',  action='store', type=int,
+                       default=defaultHeapSize, help='The maximum size of the heap')
+
     args = parser.parse_args()
     filename = args.clafer_feature_model_filename[0]
-    
+
     subprocess.check_output(["clafer",  '--mode=xml','--nr', filename]) 
 #                            stderr=subprocess.STDOUT)       
     
@@ -65,9 +76,8 @@ def execute_main():
         	
             print "Running  alloy on generated als."
         
-            subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar', __file__[:-34] + '../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
-# On windows try
-#           subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx1340m',  '-jar', __file__[:-34] + '../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+            subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx' + str(args.maxHeapSize) + 'm',  '-jar', __file__[:-34] + '../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+
             print "Finished Running alloy on generated als."    
             print "====="
             show_clafers_from_alloy_solutions(args.preserve_clafer_names, spl_transformer)
