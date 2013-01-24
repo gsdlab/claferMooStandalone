@@ -64,7 +64,10 @@ def execute_main():
         if not args.noexecution:
             print "Running  alloy on generated als."
         
-            subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+            subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m', '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+# On windows try
+#           subprocess.check_output(["java", '-Xss3m', '-Xms1340m', '-Xmx1340m', '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+
             print "Finished Running alloy on generated als."    
             show_clafers_from_alloy_solutions(spl_transformer)
      
