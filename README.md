@@ -118,13 +118,10 @@ subprocess.CalledProcessError: Command '['java', '-Xss3m', '-Xms512m', '-Xmx4096
 
  * Solution
 
-In `IntegratedFeatureModelOptimizer.py`, change the paramaters (`-Xms512m` and `-Xmx4096m`) passed to the java VM in line 
+By adding the maxHeapSize argument to the end of your command you can change the maximum size of the allocated heap.
+ex: `python IntegratedFeatureModelOptimizer.py  ../dataset/linkedlistsplc2011.cfr --maxHeapSize=1340`
 
-```python
-    subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx4096m',  '-jar','../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
-```
-
-> Hint: On Windows systems try `-Xms1340m -Xmx1340m`, which seems to be the maximum heap size that can be allocated.
+> Hint: On Windows systems try `--maxHeapSize=1340`, which seems to be the maximum heap size that can be allocated.
 
 ## Dataset used in NFPinDSML12 
 
