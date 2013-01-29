@@ -7,6 +7,7 @@ import argparse
 import subprocess
 import os
 import platform
+import sys
 from xml_parser_helper import load_xml_model
 from spl_claferanalyzer import SPL_ClaferAnalyzer
 from ComputeRelaxedBoundsGoals import ComputeRelaxedBoundsGoalsCls
@@ -45,11 +46,16 @@ def execute_main():
     args = parser.parse_args()
     filename = args.clafer_feature_model_filename[0]
 
-    subprocess.check_output(["clafer",  '--mode=xml','--nr', filename]) 
-#                            stderr=subprocess.STDOUT)       
+    try:    
+        subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
+    except subprocess.CalledProcessError, e:
+        sys.stderr.write(e.output)      
     
     spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")    
 
+    if len(spl_transformer.get_goals_as_tuple_xml_is_maximize()) == 0:
+        sys.stderr.write("No goals in found clafer file.\n")
+        sys.exit(1)
 
     if  args.onlycomputerelaxedbounds:
         BoundsGoalComputer =  ComputeRelaxedBoundsGoalsCls(spl_transformer)
@@ -59,12 +65,17 @@ def execute_main():
         expand_feature_types_sum(filename, spl_transformer)
         filename = filename[:-4] +  "_desugared.cfr"
     
-        subprocess.check_output(["clafer",  '--mode=xml','--nr', filename], \
-                                stderr=subprocess.STDOUT)
-            
-        spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")     
-        subprocess.check_output(["clafer",  '--nr', filename], stderr=subprocess.STDOUT)
-    
+        try:    
+            subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
+        except subprocess.CalledProcessError, e:
+            sys.stderr.write(e.output) 
+
+        spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml") 
+        try:    
+            subprocess.check_output(["clafer",  '--nr', filename])
+        except subprocess.CalledProcessError, e:
+                sys.stderr.write(e.output)
+
         als_fp = open(filename[:-4] + ".als", "a")
         generate_and_append_partial_instances_and_goals(filename[:-4] + ".xml", als_fp)
         als_fp.close()
@@ -76,8 +87,10 @@ def execute_main():
         	
             print "Running  alloy on generated als."
         
-            subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx' + str(args.maxHeapSize) + 'm',  '-jar', __file__[:-34] + '../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
-
+            try:    
+                subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx' + str(args.maxHeapSize) + 'm',  '-jar', __file__[:-34] + '../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+            except subprocess.CalledProcessError, e:
+                sys.stderr.write(e.output)
             print "Finished Running alloy on generated als."    
             print "====="
             show_clafers_from_alloy_solutions(args.preserve_clafer_names, spl_transformer)
