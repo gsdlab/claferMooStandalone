@@ -5,6 +5,7 @@ Created on Aug 13, 2012
 '''
 import argparse
 import subprocess
+import sys
 import os
 from xml_parser_helper import load_xml_model
 from spl_claferanalyzer import SPL_ClaferAnalyzer
@@ -13,6 +14,7 @@ from AppendPartialInstanceAndGoals import generate_and_append_partial_instances_
 from AlloyBackToClafer import show_clafers_from_alloy_solutions
 from ExpandSumOperator import expand_feature_types_sum
 from ConstraintProgramming import print_conversion_to_constraints
+from SmtTransformer import print_feature_model_converted_to_z3
 
 
 def execute_main():
@@ -24,6 +26,10 @@ def execute_main():
 
     parser.add_argument('--onlycomputerelaxedbounds',   dest='onlycomputerelaxedbounds',  action='store_true',
                        default=False, help='Only show a set of bounds for goals and dont do anything else')
+
+    parser.add_argument('--onlyprintz3model',   dest='onlyprintz3model',  action='store_true',
+                       default=False, help='Only print python code to generate an smt model')
+
         
     parser.add_argument('--noexecution',   dest='noexecution',  action='store_true',
                        default=False, help='Do not execute generated als file')
@@ -43,6 +49,8 @@ def execute_main():
         BoundsGoalComputer =  ComputeRelaxedBoundsGoalsCls(spl_transformer)
         for lowerBound, UpperBound in BoundsGoalComputer.getSimpleBounds():
             print "%s,%s" % (lowerBound, UpperBound)
+    elif args.onlyprintz3model:
+        print_feature_model_converted_to_z3(spl_transformer, sys.stdout)
     else:
         expand_feature_types_sum(filename, spl_transformer)
         filename = filename[:-4] +  "_desugared.cfr"
