@@ -24,6 +24,7 @@ class SPL_ClaferAnalyzer(object):
 
 
         self.SPL = self.get_top_level_SPL_model()
+        self.SPL_concrete = self.get_concrete_SPL_configuration()
         self._non_functional_properties =  None
         self._FeatureTypes = None
         self._xml_element_from_uniqueID ={}        
@@ -44,7 +45,25 @@ class SPL_ClaferAnalyzer(object):
                 top_level_clafer.find('c1:IsAbstract', _namespaces).text == 'true' :
                 top_level_spl_model = top_level_clafer
         return top_level_spl_model
+
+    def get_concrete_SPL_configuration(self):
+        """
+        Assume SPL concrete instance, is the last top level concrete model.
+        """
+        top_level_concrete_spl_model = None
+        assert len (self.xml_model.findall('./c1:Declaration', _namespaces)) > 0
+        
+        for top_level_clafer in self.xml_model.findall('./c1:Declaration', _namespaces):
+            if top_level_clafer.find('c1:IsAbstract', _namespaces)!= None and \
+                top_level_clafer.find('c1:IsAbstract', _namespaces).text == 'false' :
+                top_level_concrete_spl_model = top_level_clafer
+        return top_level_concrete_spl_model
     
+    def get_ConcreteLevelConstraints(self):
+        """
+        Returns a set of constraints for the partially configured SPL.
+        """
+            
     def get_clafer_Id(self, element):
         return element.find('c1:Id',_namespaces).text
 
