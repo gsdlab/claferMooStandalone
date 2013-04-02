@@ -53,8 +53,21 @@ def get_value_clafer(element, instance_xml):
     element_sig_unique_id = convert_ClaferUniqueIdLabel_toUnquiID(element_sig.get('label'))
     element_atom_label = element_atom.get('label')
 
+    #find correct element
+    elem_is_value = False
+    check_next_elem = False
+    for elem in instance_xml.findall(".instance/*"): 
+        if check_next_elem == True and len(elem.findall(".[@label='ref']"))>0:
+            element_found = elem
+            break
+        
+        check_next_elem = False
+        
+        if elem == instance_xml.find(".instance/sig[@label='%s']" % ("this/" + element_sig_unique_id)):
+            check_next_elem = True
+
     ret_val = None
-    for field_tuple in instance_xml.findall(".instance/field[@label='%s']/tuple" %  ( element_sig_unique_id+ "_ref")):        
+    for field_tuple in element_found.findall("./tuple"):        
         tuple_atom_from_element = field_tuple.find("atom[@label='%s']" % element_atom_label)
         if tuple_atom_from_element != None:
             tuple_atom_to_integer = field_tuple.findall('atom')[1]
@@ -66,7 +79,21 @@ def get_value_clafer(element, instance_xml):
 def is_value_clafer(element, instance_xml):
     element_sig, element_atom = element
     element_sig_unique_id = convert_ClaferUniqueIdLabel_toUnquiID(element_sig.get('label'))
-    return len (instance_xml.findall(".instance/field[@label='%s']" % ( element_sig_unique_id+ "_ref"))) > 0
+
+    #find correct element
+    elem_is_value = False
+    check_next_elem = False
+    for elem in instance_xml.findall(".instance/*"): 
+        if check_next_elem == True and len(elem.findall(".[@label='ref']"))>0:
+            elem_is_value = True
+            break
+        
+        check_next_elem = False
+
+        if elem == instance_xml.find(".instance/sig[@label='%s']" % ("this/" + element_sig_unique_id)):
+            check_next_elem = True
+
+    return elem_is_value
 
 def get_children(element, instance_xml, spl_transformer):
     element_sig, element_atom = element
@@ -112,7 +139,7 @@ def show_clafers_from_alloy_solutions(preserve_clafer_names, spl_transformer):
         : and return a list of sets for product-level attributes in the pareto front.    
     """
     configured_product_UniqueId = spl_transformer.get_clafer_UniqueId(spl_transformer.get_concrete_instance_as_xml_element())
-    configured_product_label = "this/" + configured_product_UniqueId    
+    configured_product_label = "this/" + configured_product_UniqueId  
     product_level_values_list =[]
     i = 1
     while(os.path.exists("alloy_solutions_" + str(i)+ ".xml")):

@@ -12,6 +12,7 @@ from xml_parser_helper import load_xml_model
 from spl_claferanalyzer import SPL_ClaferAnalyzer
 from ComputeRelaxedBoundsGoals import ComputeRelaxedBoundsGoalsCls
 from AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_goals  
+from AppendPartialInstanceAndGoals import fix_refs
 from AlloyBackToClafer import show_clafers_from_alloy_solutions
 from ExpandSumOperator import expand_feature_types_sum
 from ConstraintProgramming import print_conversion_to_constraints
@@ -71,6 +72,7 @@ def execute_main():
             sys.stderr.write(e.output) 
 
         spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml") 
+
         try:    
             subprocess.check_output(["clafer",  '--nr', filename])
         except subprocess.CalledProcessError, e:
@@ -79,7 +81,12 @@ def execute_main():
         als_fp = open(filename[:-4] + ".als", "a")
         generate_and_append_partial_instances_and_goals(filename[:-4] + ".xml", als_fp)
         als_fp.close()
-    
+
+        als_fp1 = open(filename[:-4] + ".als", "r")
+        als_fp2 = open(filename[:-4] + "_tmp.als", "w")
+        fix_refs(als_fp1, als_fp2, filename[:-4] + ".xml")
+        als_fp1.close()
+        als_fp2.close()
         
         remove_alloy_solutions()   
     
@@ -88,11 +95,14 @@ def execute_main():
             print "Running  alloy on generated als."
         
             try:    
-                subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx' + str(args.maxHeapSize) + 'm',  '-jar', __file__[:-34] + '../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + ".als")])
+
+                subprocess.check_output(["java", '-Xss3m', '-Xms512m', '-Xmx' + str(args.maxHeapSize) + 'm',  '-jar', __file__[:-34] + '../tools/multiobjective_alloy_cmd.jar', (filename[:-4] + "_tmp.als")])
+
             except subprocess.CalledProcessError, e:
                 sys.stderr.write(e.output)
             print "Finished Running alloy on generated als."    
             print "====="
+            spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")
             show_clafers_from_alloy_solutions(args.preserve_clafer_names, spl_transformer)
      
 

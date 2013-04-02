@@ -119,19 +119,19 @@ class SPL_ClaferAnalyzer(object):
     
                 first_argument_sub_arguments = first_argument.findall("c1:Exp[@xsi:type='cl:IFunctionExp']/c1:Argument", _namespaces)
                 first_argument_sub_operation = first_argument.findall("c1:Exp[@xsi:type='cl:IFunctionExp']/c1:Operation", _namespaces)                
-                
+
                 if len(first_argument_sub_arguments) == 2 and \
                     len(first_argument_sub_operation)>0 and  first_argument_sub_operation[0] != None and first_argument_sub_operation[0].text == '.' and \
                     \
                     first_argument_sub_arguments[0].find("c1:Exp[@xsi:type='cl:IClaferId']/c1:Id", _namespaces) != None and \
                     first_argument_sub_arguments[0].find("c1:Exp[@xsi:type='cl:IClaferId']/c1:Id", _namespaces).text == 'this' and \
                     \
-                    first_argument_sub_arguments[1].find("c1:Exp[@xsi:type='cl:IClaferId']/c1:Id", _namespaces) != None and \
-                    first_argument_sub_arguments[1].find("c1:Exp[@xsi:type='cl:IClaferId']/c1:Id", _namespaces).text == self.get_non_functional_property_unique_id(property)  and \
+                    first_argument_sub_arguments[1].find("c1:Exp[@xsi:type='cl:IFunctionExp']/c1:Argument/c1:Exp[@xsi:type='cl:IClaferId']c1:Id", _namespaces) != None and \
+                    first_argument_sub_arguments[1].find("c1:Exp[@xsi:type='cl:IFunctionExp']/c1:Argument/c1:Exp[@xsi:type='cl:IClaferId']c1:Id", _namespaces).text == self.get_non_functional_property_unique_id(property)  and \
                     second_argument.find("c1:Type[@xsi:type='cl:IInteger']", _namespaces)!= None:
                     
                         property_val = self.extract_integer(second_argument)
-        return property_val
+        return str(property_val)
 
     def get_max_value_property(self):
             """
@@ -406,7 +406,20 @@ class SPL_ClaferAnalyzer(object):
     
         #self.printAllChildrenTags(ArgumentImpliedFeature.find("./c1:Exp", _namespaces))
         #self.printAllChildrenTags(constraint.find("c1:ParentExp/c1:Exp[@xsi:type='cl:IDeclarationParentExp']/c1:BodyParentExp/Exp", _namespaces))
-        
+    
+    def get_goals_unique_id(self):
+        """
+        Returns a list of goals as uniqueIDs       
+        """   
+        ret = []     
+        goal_declarations = self.xml_model.findall("./c1:Declaration[@xsi:type='cl:IGoal']",  _namespaces)
+        for goal_declaration in goal_declarations:
+            goals = goal_declaration.findall("./c1:ParentExp/c1:Exp[@xsi:type='cl:IFunctionExp']/c1:Argument/c1:Exp[@xsi:type='cl:IFunctionExp']/c1:Argument/c1:Exp[@xsi:type='cl:IFunctionExp']/c1:Argument/c1:Exp[@xsi:type='cl:IClaferId']",  _namespaces)
+            for goal in goals:
+                if self.get_clafer_Id(goal) != "ref":
+                    ret.append( self.get_clafer_Id(goal) )
+        return ret
+
 
     def get_goals_as_tuple_xml_is_maximize(self):
         """
