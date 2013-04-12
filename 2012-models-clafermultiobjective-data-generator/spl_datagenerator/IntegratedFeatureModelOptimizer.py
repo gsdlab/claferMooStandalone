@@ -21,7 +21,13 @@ from SmtTransformer import print_feature_model_converted_to_z3
 
 
 def execute_main():
-
+    print "-------------------------------------------------"
+    print "| ClaferMOO v0.3.2.11-4-2013                    |"
+    print "| By Rafael Olaechea                            |"
+    print "| https://github.com/gsdlab/claferMooStandalone |"
+    print "|-----------------------------------------------|"
+    print "| Using Clafer v0.3.2.11-4-2013                 |"
+    print "-------------------------------------------------"
     
     if platform.system() is 'Windows':
         defaultHeapSize = 1340

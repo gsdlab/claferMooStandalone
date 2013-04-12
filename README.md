@@ -1,22 +1,35 @@
-# ClaferMoo
+# ClaferMOO
 
-v0.3.2.23-01-2013
+v0.3.2.11-4-2013
 
-Performs multi-objective optimization over clafer models, which can encode attributed feature models.
+Performs multi-objective optimization over clafer models limited to the attributed feature models with inheritance subset.
 
-## Dependencies
+Getting Clafer Tools
+--------------------
 
-* Clafer Translator binary has to be in your path
- * You can download a clafer binary for mac/linux/windows from https://github.com/gsdlab/claferig/downloads. 
- * Copy the file called `clafer` or `clafer.exe` into your path. 
-* Python 2.x > 2.7  
-* Java 32-bits as we use JNI 32-bits.
+Binary distributions of Clafer and ClaferIG for Windows, Mac, and Linux, can be downloaded from [Clafer Tools - Binary Distributions](http://gsd.uwaterloo.ca/node/516). 
+Clafer Wiki requires Haskell Platform and MinGW to run on Windows.
 
-## Install
+In case these binaries do not work on your particular machine configuration, the tools can be easily built from source code, as described below.
+
+The following tools are not part of the binary distribution and they have to be downloaded separately:
+
+* ClaferMOO is a set of scripts in Python (cross-platform). 
+* [ClaferMooVisualizer](https://github.com/gsdlab/ClaferMooVisualizer) is a client/server web application written JavaScript.
+* [ClaferConfigurator](https://github.com/gsdlab/ClaferConfigurator) is a client/server web application written JavaScript.
+
+### Dependencies for running
+
+* [Clafer](https://github.com/gsdlab/clafer) v0.3.2
+* [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v6+, 32bit
+* [Python](http://www.python.org/download/) v2.7.*
+
+## Installation
 
 `git clone git@github.com:gsdlab/claferMooStandalone.git`
    
-## Getting Started
+Usage
+=====
 
 After installing, execute:
 
@@ -55,7 +68,8 @@ This should provide the following output:
 			total_footprint  =  443 
 ```
 
-## Troubleshooting
+Troubleshooting
+---------------
 
 #### Clafer is not in your path
 
