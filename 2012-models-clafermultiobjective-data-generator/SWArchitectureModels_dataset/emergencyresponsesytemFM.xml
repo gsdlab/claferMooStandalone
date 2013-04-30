@@ -1,0 +1,66 @@
+<!-- This model was created online using SPLOT's Feature Model Editor (http://www.splot-research.org) on Tue, Jan 15, 2013 - 5:15 PM  -->
+<feature_model name="Web_Portal">
+<meta>
+<data name="description">This feature model describes the configurations of an emergency response system</data>
+<data name="creator">Naeem Esfahani</data>
+<data name="address">200 University Ave. West, Waterloo, ON, Canada</data>
+<data name="email">nesfaha2 at gmu dot edu</data>
+<data name="phone">+1-202-642-4463</data>
+<data name="website">http://mason.gmu.edu/~nesfaha2/</data>
+<data name="organization">George Mason University</data>
+<data name="department">Department of Computer Science</data>
+<data name="date"></data>
+<data name="reference">Naeem Esfahani, Sam Malek, Kaveh Razavi. GuideArch: Guiding the exploration of architectural solution space under uncertainty</data>
+</meta>
+<feature_tree>
+:r searchandrescuefm(searchandrescuefm)
+	:m locationfinding(locationfinding)
+		:g (_id_0) [1,1]
+			: gps(gps)
+			: radiotriangulation(radiotriangulation)		
+	:m hardwareplatform(hardwareplatform)
+		:g (_id_1) [1,1]
+			: nexusonehtc(nexusonehtc)
+			: droidmotoroal(droidmotoroal)		
+	:m filesharing(filesharing)
+		:g (_id_2) [1,1]
+			: filemanageropentintents(filemanageropentintents)
+			: inhousefilemanager(inhousefilemanager)		
+	:m reportsynchronization(reportsynchronization)
+		:g (_id_3) [1,1]
+			: explicitreportssync(explicitreportssync)
+			: implicitreportssync(implicitreportssync)
+	:m chatprotocol(chatprotocol) 
+		:g (_id_4) [1,1]
+			: openfire(openfire)
+			: inhousechatprotocol(inhousechatprotocol)
+	:m mapaccess(mapaccess)	
+		:g (_id_5) [1,1]
+			: ondemandgooglesite(ondemandgooglesite)
+			: cachedgoogleserver(cachedgoogleserver)
+			: preloadedesri(preloadedesri)
+	:m connectivity(connectivity)
+		:g (_id_6) [1,1]	
+			: wifi(wifi)
+			: threegnexusone(threegnexusone)
+			: threedroid(threedroid)
+			: bluetooth(bluetooth)			
+	:m database(database)
+		:g (_id_7) [1,1]
+			: mysql(mysql)
+			: sqlite(sqlite)
+	:m architecturalstyle(architecturalstyle)
+		:g (_id_8) [1,1]
+			: peertopeer(peertopeer)
+			: clientserver(clientserver)
+			: pushbased(pushbased)
+	:m dataexchangeformat(dataexchangeformat)
+		:g (_id_9) [1,1]
+			: xml(xml)
+			: compressedxml(compressedxml)
+			: unformatteddata(unformatteddata)
+</feature_tree>
+<constraints>
+</constraints>
+</feature_model>
+		 
