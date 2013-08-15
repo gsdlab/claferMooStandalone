@@ -1,8 +1,8 @@
 # ClaferMOO
 
-v0.3.2.11-4-2013
+v0.3.3.14-8-2013
 
-Performs multi-objective optimization over clafer models limited to the attributed feature models with inheritance subset.
+Performs multi-objective optimization over clafer models limited to the *attributed feature models with inheritance* subset of Clafer.
 
 Getting Clafer Tools
 --------------------
@@ -20,7 +20,7 @@ The following tools are not part of the binary distribution and they have to be 
 
 ### Dependencies for running
 
-* [Clafer](https://github.com/gsdlab/clafer) v0.3.2
+* [Clafer](https://github.com/gsdlab/clafer) v0.3.3
 * [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v6+, 32bit
 * [Python](http://www.python.org/download/) v2.7.*
 
