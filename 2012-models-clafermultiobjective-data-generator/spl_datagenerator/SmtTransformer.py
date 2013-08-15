@@ -98,3 +98,19 @@ def print_feature_model_converted_to_z3(spl_transformer, fp_out):
     fp_out.write("from spl_datagenerator.GIAforZ3 import GuidedImprovementAlgorithm\n")
     fp_out.write("GuidedImprovementAlgorithm(s, metrics_variables)")
     # Implementing GIA s.add(Or(And(total_c3_cost < 760, total_c2_RampUpTime <= 53), And(total_c3_cost <= 760, total_c2_RampUpTime < 53))).
+    
+    for FeatureType in spl_transformer.FeatureTypes:
+        FeatureType_UniqueId = spl_transformer.get_clafer_UniqueId(FeatureType)
+        #print "%s -- " % spl_transformer.getFeatureAttributes(FeatureType)
+        for non_functional_property_unique_id in spl_transformer.getFeatureAttributes(FeatureType):
+            #print "Feature Attribute %s ||" % non_functional_property_unique_id            
+            non_functional_property_clafer_id = spl_transformer.convert_ClaferUniqueId_to_ClaferId(non_functional_property_unique_id)
+            var_list = []
+            for childFeature in spl_transformer.get_features_as_xml_elements(FeatureType_UniqueId): 
+                childFeature_clafer_id = spl_transformer.get_clafer_Id(childFeature)
+                childFeature_unique_id = spl_transformer.get_clafer_UniqueId(childFeature)
+                non_functional_property_value = spl_transformer.get_property_value(childFeature, non_functional_property_clafer_id)
+
+                fp_out.write("%s,%s,%s\n" % (childFeature_clafer_id, non_functional_property_clafer_id, non_functional_property_value))
+
+    
