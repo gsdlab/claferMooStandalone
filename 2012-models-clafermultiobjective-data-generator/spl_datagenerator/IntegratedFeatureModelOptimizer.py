@@ -15,18 +15,18 @@ from ComputeRelaxedBoundsGoals import ComputeRelaxedBoundsGoalsCls
 from AppendPartialInstanceAndGoals import generate_and_append_partial_instances_and_goals  
 from AppendPartialInstanceAndGoals import fix_refs
 from AlloyBackToClafer import show_clafers_from_alloy_solutions
-from ExpandSumOperator import expand_feature_types_sum
 from ConstraintProgramming import print_conversion_to_constraints
 from SmtTransformer import print_feature_model_converted_to_z3
 
 
 def execute_main():
+    print ""
     print "-------------------------------------------------"
-    print "| ClaferMOO v0.3.2.11-4-2013                    |"
+    print "| ClaferMOO v0.3.3.24-8-2013                    |"
     print "| By Rafael Olaechea                            |"
     print "| https://github.com/gsdlab/claferMooStandalone |"
     print "|-----------------------------------------------|"
-    print "| Using Clafer v0.3.2.11-4-2013                 |"
+    print "| Using Clafer v0.3.3.24-8-2013                 |"
     print "-------------------------------------------------"
     
     if platform.system() is 'Windows':
@@ -77,9 +77,7 @@ def execute_main():
     elif args.onlyprintz3model:
         print_feature_model_converted_to_z3(spl_transformer, sys.stdout)
     else:
-        expand_feature_types_sum(filename, spl_transformer)
-        filename = filename[:-4] +  "_desugared.cfr"
-    
+ 
         try:    
             subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
         except subprocess.CalledProcessError, e:
