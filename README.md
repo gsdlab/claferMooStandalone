@@ -1,26 +1,36 @@
-# ClaferMOO
+ClaferMOO
+=========
 
-v0.3.3.14-8-2013
+v0.3.4.20-9-2013
 
 Performs multi-objective optimization over clafer models limited to the *attributed feature models with inheritance* subset of Clafer.
+
+Contributors
+------------
+
+* [Rafael Olaechea](http://gsd.uwaterloo.ca/rolaechea), MSc. Candidate. Main developer.
+* [Michał Antkiewicz](http://gsd.uwaterloo.ca/mantkiew), Research Engineer. Requirements, development, architecture, testing, technology transfer.
+* [Alexandr Murashkin](http://gsd.uwaterloo.ca/amurashk), MSc. Candidate. Minor fixes.
 
 Getting Clafer Tools
 --------------------
 
-Binary distributions of Clafer and ClaferIG for Windows, Mac, and Linux, can be downloaded from [Clafer Tools - Binary Distributions](http://gsd.uwaterloo.ca/node/516). 
-Clafer Wiki requires Haskell Platform and MinGW to run on Windows.
+Binary distributions of release 0.3.4 of 
+Clafer, 
+ClaferIG, 
+ClaferWiki, 
+ClaferMoo, 
+ClaferMooVisualizer, 
+and ClaferConfigurator 
+for Windows, Mac, and Linux, 
+can be downloaded from [Clafer Tools - Binary Distributions](http://gsd.uwaterloo.ca/node/516). 
+Clafer Wiki requires Haskell Platform and MinGW to run on Windows. 
 
 In case these binaries do not work on your particular machine configuration, the tools can be easily built from source code, as described below.
 
-The following tools are not part of the binary distribution and they have to be downloaded separately:
-
-* ClaferMOO is a set of scripts in Python (cross-platform). 
-* [ClaferMooVisualizer](https://github.com/gsdlab/ClaferMooVisualizer) is a client/server web application written JavaScript.
-* [ClaferConfigurator](https://github.com/gsdlab/ClaferConfigurator) is a client/server web application written JavaScript.
-
 ### Dependencies for running
 
-* [Clafer](https://github.com/gsdlab/clafer) v0.3.3
+* [Clafer](https://github.com/gsdlab/clafer) v0.3.4
 * [Java Platform (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) v6+, 32bit
 * [Python](http://www.python.org/download/) v2.7.*
 
@@ -28,8 +38,15 @@ The following tools are not part of the binary distribution and they have to be 
 
 `git clone git@github.com:gsdlab/claferMooStandalone.git`
    
-Usage
-=====
+### Important: Branches must correspond
+
+Clafer, ClaferIG, ClaferWiki, ClaferMoo,  ClaferMooVisualizer, and ClaferConfigurator are following the *simultaneous release model*. 
+The branch `master` contains releases, whereas the branch `develop` contains code under development. 
+When building the tools, the branches should match:
+Releases `clafer/master` and `claferIG/master` are guaranteed to work well together.
+Development versions `clafer/develop` and `claferIG/develop` should work well together but this might not always be the case.
+
+## Usage
 
 After installing, execute:
 
@@ -142,3 +159,13 @@ ex: `python IntegratedFeatureModelOptimizer.py  ../dataset/linkedlistsplc2011.cf
 (Fourth International Workshop on Non-functional System Properties in Domain Specific Modeling Languages)
 
 It is located in directories `claferMooStandalone/2012-models-clafermultiobjective-data-generator/satisfiable_partial_configurations_dataset` and `claferMooStandalone/2012-models-clafermultiobjective-data-generator/non_configured_dataset`.
+
+Need help?
+==========
+* See [Project's website](http://gsd.uwaterloo.ca/clafer) for news, technical reports and more
+  * Check out a [Clafer tutorial](http://gsd.uwaterloo.ca/node/310)
+  * Try live instance of [ClaferWiki](http://t3-necsis.cs.uwaterloo.ca:8091)
+  * Try [Online translator](http://gsd.uwaterloo.ca/clafer/translator)
+* Take a look at incomplete [Clafer wiki](https://github.com/gsdlab/clafer/wiki)
+* Browse example models in the [test suite](https://github.com/gsdlab/clafer/tree/master/test/positive) and [MOO examples](https://github.com/gsdlab/clafer/tree/master/spl_configurator/dataset)
+* Post questions, report bugs, suggest improvements [GSD Lab Bug Tracker](http://gsd.uwaterloo.ca:8888/questions/). Tag your entries with `clafermoo` (so that we know what they are related to) and with `rafael-olaechea` (so that Rafael gets a notification).
