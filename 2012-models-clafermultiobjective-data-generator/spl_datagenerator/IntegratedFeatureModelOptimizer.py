@@ -20,14 +20,8 @@ from SmtTransformer import print_feature_model_converted_to_z3
 
 
 def execute_main():
-    print ""
-    print "-------------------------------------------------"
-    print "| ClaferMOO v0.3.3.24-8-2013                    |"
-    print "| By Rafael Olaechea                            |"
-    print "| https://github.com/gsdlab/claferMooStandalone |"
-    print "|-----------------------------------------------|"
-    print "| Using Clafer v0.3.3.24-8-2013                 |"
-    print "-------------------------------------------------"
+    version = "v0.3.4.20-9-2013"
+    clafer_version = "v0.3.4.20-9-2013"
     
     if platform.system() is 'Windows':
         defaultHeapSize = 1340
@@ -56,7 +50,19 @@ def execute_main():
     parser.add_argument('--maxHeapSize',   dest='maxHeapSize',  action='store', type=int,
                        default=defaultHeapSize, help='The maximum size of the heap')
 
-    args = parser.parse_args()
+    parser.add_argument('--version', action='version', version='ClaferMoo ' + version)
+                       
+    args = parser.parse_args()    
+
+    print ""
+    print "-------------------------------------------------"
+    print "| ClaferMOO",     version,  "                   |"
+    print "| By Rafael Olaechea                            |"
+    print "| https://github.com/gsdlab/claferMooStandalone |"
+    print "|-----------------------------------------------|"
+    print "| Using Clafer",clafer_version,"                |"
+    print "-------------------------------------------------"
+    
     filename = args.clafer_feature_model_filename[0]
 
     try:    
