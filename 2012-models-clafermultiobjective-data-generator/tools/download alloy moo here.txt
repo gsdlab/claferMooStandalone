@@ -1,0 +1,3 @@
+multiobjective_alloy_cmd.jar
+
+https://github.com/gsdlab/claferMooStandalone/blob/master/2012-models-clafermultiobjective-data-generator/tools/multiobjective_alloy_cmd.jar?raw=true
