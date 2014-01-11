@@ -1,7 +1,7 @@
 ClaferMOO
 =========
 
-v0.3.4.20-9-2013
+v0.3.5.15-01-2014
 
 Performs multi-objective optimization over clafer models limited to the *attributed feature models with inheritance* subset of Clafer.
 
@@ -15,18 +15,14 @@ Contributors
 Getting Clafer Tools
 --------------------
 
-Binary distributions of release 0.3.4 of 
-Clafer, 
-ClaferIG, 
-ClaferWiki, 
-ClaferMoo, 
-ClaferMooVisualizer, 
-and ClaferConfigurator 
-for Windows, Mac, and Linux, 
-can be downloaded from [Clafer Tools - Binary Distributions](http://gsd.uwaterloo.ca/node/516). 
+Getting Clafer Tools
+--------------------
+
+Binary distributions of the release 0.3.5 of Clafer Tools for Windows, Mac, and Linux, 
+can be downloaded from [Clafer Tools - Binary Distributions](http://http://gsd.uwaterloo.ca/clafer-tools-binary-distributions). 
 Clafer Wiki requires Haskell Platform and MinGW to run on Windows. 
 
-In case these binaries do not work on your particular machine configuration, the tools can be easily built from source code, as described below.
+In case these binaries do not work on your particular machine configuration, the tools can be built from source code, as described below.
 
 ### Dependencies for running
 
@@ -40,12 +36,11 @@ In case these binaries do not work on your particular machine configuration, the
    
 ### Important: Branches must correspond
 
-Clafer, ClaferIG, ClaferWiki, ClaferMoo,  ClaferMooVisualizer, and ClaferConfigurator are following the *simultaneous release model*. 
+All related projects are following the *simultaneous release model*. 
 The branch `master` contains releases, whereas the branch `develop` contains code under development. 
-When building the tools, the branches should match:
-Releases `clafer/master` and `claferIG/master` are guaranteed to work well together.
-Development versions `clafer/develop` and `claferIG/develop` should work well together but this might not always be the case.
-
+When building the tools, the branches should match.
+Releases from branches 'master` are guaranteed to work well together.
+Development versions from branches `develop` should work well together but this might not always be the case.
 ## Usage
 
 After installing, execute:
@@ -162,10 +157,12 @@ It is located in directories `claferMooStandalone/2012-models-clafermultiobjecti
 
 Need help?
 ==========
-* See [Project's website](http://gsd.uwaterloo.ca/clafer) for news, technical reports and more
-  * Check out a [Clafer tutorial](http://gsd.uwaterloo.ca/node/310)
-  * Try live instance of [ClaferWiki](http://t3-necsis.cs.uwaterloo.ca:8091)
-  * Try [Online translator](http://gsd.uwaterloo.ca/clafer/translator)
-* Take a look at incomplete [Clafer wiki](https://github.com/gsdlab/clafer/wiki)
+* See [language's website](http://clafer.org) for news, technical reports and more
+  * Check out a [Clafer tutorial](http://t3-necsis.cs.uwaterloo.ca:8091/Tutorial/Intro)
+  * Try a live instance of [ClaferWiki](http://t3-necsis.cs.uwaterloo.ca:8091)
+  * Try a live instance of [ClaferIDE](http://t3-necsis.cs.uwaterloo.ca:8094)
+  * Try a live instance of [ClaferConfigurator](http://t3-necsis.cs.uwaterloo.ca:8093)
+  * Try a live instance of [ClaferMooVisualizer](http://t3-necsis.cs.uwaterloo.ca:8092)
+* Take a look at (incomplete) [Clafer wiki](https://github.com/gsdlab/clafer/wiki)
 * Browse example models in the [test suite](https://github.com/gsdlab/clafer/tree/master/test/positive) and [MOO examples](https://github.com/gsdlab/clafer/tree/master/spl_configurator/dataset)
 * Post questions, report bugs, suggest improvements [GSD Lab Bug Tracker](http://gsd.uwaterloo.ca:8888/questions/). Tag your entries with `clafermoo` (so that we know what they are related to) and with `rafael-olaechea` (so that Rafael gets a notification).
