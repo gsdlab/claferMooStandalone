@@ -20,8 +20,8 @@ from SmtTransformer import print_feature_model_converted_to_z3
 
 
 def execute_main():
-    version = "v0.3.5.15-01-2014"
-    clafer_version = "v0.3.5.15-01-2014"
+    version = "v0.3.5.17-01-2014"
+    clafer_version = "v0.3.5.17-01-2014"
     if platform.system() is 'Windows':
         defaultHeapSize = 1340
     else:

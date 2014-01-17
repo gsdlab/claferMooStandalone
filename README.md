@@ -1,7 +1,7 @@
 ClaferMOO
 =========
 
-v0.3.5.15-01-2014
+v0.3.5.17-01-2014
 
 Performs multi-objective optimization over clafer models limited to the *attributed feature models with inheritance* subset of Clafer.
 
