@@ -50,6 +50,9 @@ def execute_main():
                        default=defaultHeapSize, help='The maximum size of the heap')
 
     parser.add_argument('--version', action='version', version='ClaferMoo ' + version)
+
+    parser.add_argument('--donotexecutecompiler',   dest='donotexecutecompiler',  action='store_true',
+                       default=False, help='Do not run Compiler assuming all the required files (als, xml) are already produced')
                        
     args = parser.parse_args()    
 
@@ -64,10 +67,11 @@ def execute_main():
     
     filename = args.clafer_feature_model_filename[0]
 
-    try:    
-        subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
-    except subprocess.CalledProcessError, e:
-        sys.stderr.write(e.output)      
+    if not args.donotexecutecompiler:
+        try:    
+            subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
+        except subprocess.CalledProcessError, e:
+            sys.stderr.write(e.output)      
     
     spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")    
 
@@ -83,17 +87,19 @@ def execute_main():
         print_feature_model_converted_to_z3(spl_transformer, sys.stdout)
     else:
  
-        try:    
-            subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
-        except subprocess.CalledProcessError, e:
-            sys.stderr.write(e.output) 
+        if not args.donotexecutecompiler:
+            try:    
+                subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
+            except subprocess.CalledProcessError, e:
+                sys.stderr.write(e.output) 
 
         spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml") 
 
-        try:    
-            subprocess.check_output(["clafer",  '--nr', filename])
-        except subprocess.CalledProcessError, e:
-                sys.stderr.write(e.output)
+        if not args.donotexecutecompiler:
+            try:    
+                subprocess.check_output(["clafer",  '--nr', filename])
+            except subprocess.CalledProcessError, e:
+                    sys.stderr.write(e.output)
 
         als_fp = open(filename[:-4] + ".als", "a")
         generate_and_append_partial_instances_and_goals(filename[:-4] + ".xml", als_fp)
