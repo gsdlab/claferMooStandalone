@@ -20,8 +20,8 @@ from SmtTransformer import print_feature_model_converted_to_z3
 
 
 def execute_main():
-    version = "v0.3.5.17-01-2014"
-    clafer_version = "v0.3.5.17-01-2014"
+    version = "v0.3.5.20-01-2014"
+    clafer_version = "v0.3.5.20-01-2014"
     if platform.system() is 'Windows':
         defaultHeapSize = 1340
     else:
@@ -48,6 +48,9 @@ def execute_main():
 
     parser.add_argument('--maxHeapSize',   dest='maxHeapSize',  action='store', type=int,
                        default=defaultHeapSize, help='The maximum size of the heap')
+
+    parser.add_argument('--maxint',   dest='maxint',  action='store', type=int,
+                       default=31, help='Maximum integer (not supported yet)')
 
     parser.add_argument('--version', action='version', version='ClaferMoo ' + version)
 
