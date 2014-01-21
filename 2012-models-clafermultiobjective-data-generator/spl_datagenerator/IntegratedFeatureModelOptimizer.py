@@ -20,9 +20,9 @@ from SmtTransformer import print_feature_model_converted_to_z3
 
 
 def execute_main():
-    version = "v0.3.4.20-9-2013"
-    clafer_version = "v0.3.4.20-9-2013"
-    
+    version = "v0.3.5.20-01-2014"
+    clafer_version = "v0.3.5.20-01-2014"
+
     if platform.system() is 'Windows':
         defaultHeapSize = 1340
     else:
@@ -50,7 +50,13 @@ def execute_main():
     parser.add_argument('--maxHeapSize',   dest='maxHeapSize',  action='store', type=int,
                        default=defaultHeapSize, help='The maximum size of the heap')
 
+    parser.add_argument('--maxint',   dest='maxint',  action='store', type=int,
+                       default=31, help='Maximum integer (not supported yet)')
+
     parser.add_argument('--version', action='version', version='ClaferMoo ' + version)
+
+    parser.add_argument('--donotexecutecompiler',   dest='donotexecutecompiler',  action='store_true',
+                       default=False, help='Do not run Compiler assuming all the required files (als, xml) are already produced')
                        
     args = parser.parse_args()    
 
@@ -65,10 +71,11 @@ def execute_main():
     
     filename = args.clafer_feature_model_filename[0]
 
-    try:    
-        subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
-    except subprocess.CalledProcessError, e:
-        sys.stderr.write(e.output)      
+    if not args.donotexecutecompiler:
+        try:    
+            subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
+        except subprocess.CalledProcessError, e:
+            sys.stderr.write(e.output)      
     
     spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml")    
 
@@ -84,17 +91,19 @@ def execute_main():
         print_feature_model_converted_to_z3(spl_transformer, sys.stdout)
     else:
  
-        try:    
-            subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
-        except subprocess.CalledProcessError, e:
-            sys.stderr.write(e.output) 
+        if not args.donotexecutecompiler:
+            try:    
+                subprocess.check_output(["clafer",  '--mode=xml','--nr', filename])
+            except subprocess.CalledProcessError, e:
+                sys.stderr.write(e.output) 
 
         spl_transformer = SPL_ClaferAnalyzer(filename[:-4] + ".xml") 
 
-        try:    
-            subprocess.check_output(["clafer",  '--nr', filename])
-        except subprocess.CalledProcessError, e:
-                sys.stderr.write(e.output)
+        if not args.donotexecutecompiler:
+            try:    
+                subprocess.check_output(["clafer",  '--nr', filename])
+            except subprocess.CalledProcessError, e:
+                    sys.stderr.write(e.output)
 
         als_fp = open(filename[:-4] + ".als", "a")
         generate_and_append_partial_instances_and_goals(filename[:-4] + ".xml", als_fp)
